@@ -4,13 +4,14 @@ import math
 
 # Define frequencies for high and low tones
 HIGH_FREQ = 1000  # Adjust for desired high frequency (Hz)
-LOW_FREQ = 500   # Adjust for desired low frequency (Hz)
+LOW_FREQ = 100   # Adjust for desired low frequency (Hz)
 
 # Define duration of each tone
 DURATION = 0.4  # Adjust for desired tone duration (seconds)
-DELAY = 0.1
+DELAY = 0.1 # Duration between each char
 
-speaker = Speaker(15)
+speaker = Speaker(13)
+
 
 def play_tone(frequency):
     speaker.play(int(frequency), duration=DURATION)  # Play tone with specified frequency and duration
@@ -18,8 +19,8 @@ def play_tone(frequency):
 
 def play_binary(binary_string):
     # Define frequencies for high and low tones
-    FREQ_1 = 1000  # Adjust for desired frequency (Hz) for 1
-    FREQ_0 = 500   # Adjust for desired frequency (Hz) for 0
+    FREQ_1 = 1000  
+    FREQ_0 = 500  
 
     for bit in binary_string:
         if bit == "1":
@@ -59,19 +60,13 @@ def play_hexadecimal(hexadecimal_string):
         play_tone(frequencies[index])
 
 # Example usage (replace with your actual tone playing calls)
-speaker.volume = 1
-print(speaker.volume)
-speaker.play(600,1)
-sleep(.1)
-speaker.volume = 0
-print(speaker.volume)
-speaker.play(600,1)
+play_binary("010101")
 play_octal("01234567")
 sleep(1)
-speaker.volume = 2
+
 play_decimal("0123456789")
 sleep(1)
-speaker.volume = 0.1
+
 play_hexadecimal("0123456789ABCDEF")
 
 
