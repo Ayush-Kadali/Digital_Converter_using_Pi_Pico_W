@@ -8,8 +8,8 @@ I2C_ADDR     = 39
 I2C_NUM_ROWS = 2
 I2C_NUM_COLS = 16
 
-i2c = I2C(0, sda=machine.Pin(16), scl=machine.Pin(17), freq=400000)
-lcd = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
+i2c = I2C(1, sda=machine.Pin(26), scl=machine.Pin(27), freq=400000)
+lcd2 = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
 
     
 
@@ -17,7 +17,7 @@ lcd = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
 def MIT_LOGO():
     
     #Panel 00      
-    lcd.custom_char(0, bytearray([
+    lcd2.custom_char(0, bytearray([
     0x00,
     0x00,
     0x00,
@@ -30,7 +30,7 @@ def MIT_LOGO():
         ]))
     
     #Panel 10      
-    lcd.custom_char(1, bytearray([
+    lcd2.custom_char(1, bytearray([
     0x1F,
     0x1F,
     0x15,
@@ -45,7 +45,7 @@ def MIT_LOGO():
     
     
     #Panel 01
-    lcd.custom_char(2, bytearray([
+    lcd2.custom_char(2, bytearray([
     0x00,
     0x04,
     0x04,
@@ -59,7 +59,7 @@ def MIT_LOGO():
         ]))
     
     #Panel 11
-    lcd.custom_char(3, bytearray([
+    lcd2.custom_char(3, bytearray([
     0x1F,
     0x1F,
     0x15,
@@ -74,7 +74,7 @@ def MIT_LOGO():
         ]))
     
     #Panel 02
-    lcd.custom_char(4, bytearray([
+    lcd2.custom_char(4, bytearray([
     0x00,
     0x00,
     0x00,
@@ -87,7 +87,7 @@ def MIT_LOGO():
         ]))
 
     #Panel 12
-    lcd.custom_char(5, bytearray([
+    lcd2.custom_char(5, bytearray([
     0x1F,
     0x1F,
     0x15,
@@ -100,32 +100,32 @@ def MIT_LOGO():
         
         ]))
   
-    lcd.move_to(0,0)
-    lcd.putchar(chr(0))
-    lcd.move_to(0,1)
-    lcd.putchar(chr(1))
-    lcd.move_to(1,0)
-    lcd.putchar(chr(2))
-    lcd.move_to(1,1)
-    lcd.putchar(chr(3))
-    lcd.move_to(2,0)
-    lcd.putchar(chr(4))
-    lcd.move_to(2,1)
-    lcd.putchar(chr(5))
+    lcd2.move_to(0,0)
+    lcd2.putchar(chr(0))
+    lcd2.move_to(0,1)
+    lcd2.putchar(chr(1))
+    lcd2.move_to(1,0)
+    lcd2.putchar(chr(2))
+    lcd2.move_to(1,1)
+    lcd2.putchar(chr(3))
+    lcd2.move_to(2,0)
+    lcd2.putchar(chr(4))
+    lcd2.move_to(2,1)
+    lcd2.putchar(chr(5))
     
     
   
 
 def textscroll(length,string):
-    x = lcd.cursor_x
-    y = lcd.cursor_y
+    x = lcd2.cursor_x
+    y = lcd2.cursor_y
     i=0
     for i in range(len(string)-length+1):
         updated_str = string[i:i+length]
-        lcd.move_to(x,y)
-        lcd.putstr(" "*length)
-        lcd.move_to(x,y)
-        lcd.putstr(updated_str)
+        lcd2.move_to(x,y)
+        lcd2.putstr(" "*length)
+        lcd2.move_to(x,y)
+        lcd2.putstr(updated_str)
         i += 1
         utime.sleep(1)
 
@@ -134,12 +134,12 @@ def textscroll(length,string):
     
  
 MIT_LOGO()
-lcd.move_to (7,0)
-lcd.putstr("MIT-WPU")
-lcd.move_to(5,1)
-lcd.putstr("Group : 07")
+lcd2.move_to (7,0)
+lcd2.putstr("MIT-WPU")
+lcd2.move_to(5,1)
+lcd2.putstr("Group : 07")
 utime.sleep(5)
-lcd.move_to(4,1)
+lcd2.move_to(4,1)
 string = "FCASD MiniProject"
 textscroll(11,string)
 

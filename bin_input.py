@@ -29,8 +29,8 @@ def bin_input():
 
         print(count)
         utime.sleep(.11)
+    buzzer.play_tone(500)
     return bin_str
         
 
 print(bin_input())
-buzzer.play_tone(500)
