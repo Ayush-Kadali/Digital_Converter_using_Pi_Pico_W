@@ -1,7 +1,7 @@
 from machine import I2C, Pin
 import utime
 from pico_i2c_lcd import I2cLcd
-import bin_inputfrom
+import bin_input
 
 
 def bin_to_dec(bin_num):
@@ -47,18 +47,19 @@ def convert_and_display(data_type, bin_num):
     lcd.putstr("{: <16}".format("{}: {}".format(data_type, result)))
 
 def input_available():
-    return button_pin.value() == 0  # Assuming the button pin is grounded when pressed
+    return button_pin.value() == 1  # Assuming the button pin is grounded when pressed
 
-data_types = ["Dec", "Hex", "Oct", "Excess-3", "Gray"]
-current_data_type = data_types[0]
+def init():
+    data_types = ["Dec", "Hex", "Oct", "Excess-3", "Gray"]
+    current_data_type = data_types[0]
 
-i2c = I2C(0, sda=Pin(20), scl=Pin(21))
-I2C_ADDR = i2c.scan()[0]
-lcd = I2cLcd(i2c, I2C_ADDR, 2, 16)
+    i2c = I2C(0, sda=Pin(20), scl=Pin(21))
+    I2C_ADDR = i2c.scan()[0]
+    lcd = I2cLcd(i2c, I2C_ADDR, 2, 16)
 
-button_pin = Pin(0, Pin.IN, Pin.PULL_UP)  # Assuming pin 10 is connected to the button
+    button_pin = Pin(22, Pin.IN, Pin.PULL_UP)  # Assuming pin 10 is connected to the button
 
-while True:
+def convert():
     bin_num = bin_input()
     
     convert_and_display(current_data_type, bin_num)
@@ -69,4 +70,3 @@ while True:
         utime.sleep(1)
         current_data_type = data_types[(data_types.index(current_data_type) + 1) % len(data_types)]
         convert_and_display(current_data_type, bin_num)
-
