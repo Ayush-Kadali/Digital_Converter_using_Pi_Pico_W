@@ -1,0 +1,78 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    min-width: 400px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.university-logo {
+    display: block;
+    margin: 0 auto;
+    width: 200px; /* Adjust width as needed */
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    margin: 0 auto;
+    margin-right: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.output {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.buzzer {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background-color: #007bff;
+    border: 2px solid transparent;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.buzzer:hover {
+    border: 2px solid #11468f;
+    opacity: 0.8;
+}
+
+@media only screen and (max-width: 768px) {
+  .input-container input {
+    font-size: 10px; /* Reduce font size on smaller screens */
+  }
+}

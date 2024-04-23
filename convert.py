@@ -2,6 +2,7 @@ from machine import I2C, Pin
 import utime
 from pico_i2c_lcd import I2cLcd
 import buzzer
+import uasyncio
 
 
 no_of_led = 12
@@ -81,19 +82,25 @@ def bin_to_oct(bin_num):
 
 def bin_to_excess3(bin_num):
     decimal = bin_to_dec(bin_num)
-    return bin(decimal+3)[2:]
+    result = bin(decimal+3)[2:]
+    i = 0
+    while i<len(result) and result[i]=='0':
+        i+=1
+    return result[i:]
 
 def bin_to_gray(bin_num):
     bin_str = str(bin_num)  # Convert integer to string
-    gray_str = ''
-    gray_str += bin_str[0]
+    result = ''
+    result += bin_str[0]
     for i in range(1, len(bin_str)):
-        gray_str += str(int(bin_str[i - 1]) ^ int(bin_str[i]))
-    return gray_str
+        result += str(int(bin_str[i - 1]) ^ int(bin_str[i]))
+    return result
+
+
 
 # Add more conversion functions as needed
 
-def convert_and_display(data_type, bin_num):
+def convert_to(data_type, bin_num):
     
     if data_type == "Dec":
         result = bin_to_dec(bin_num)
@@ -105,7 +112,10 @@ def convert_and_display(data_type, bin_num):
         result = bin_to_excess3(bin_num)
     elif data_type == "GRY":
         result = bin_to_gray(bin_num)
+
+    return result
     
+def display(data_type, bin_num, result):
     lcd.move_to(0, 0)
     lcd.putstr("Bin:{}\n".format(bin_num))
     lcd.move_to(0, 1)  # Move to the second row
@@ -115,26 +125,38 @@ def convert_and_display(data_type, bin_num):
 def input_available():
     return button_pin.value() == 0  # Assuming the button pin is grounded when pressed
 
-def convert():
+async def convert(binary=None):
     data_types = ["Dec", "Hex", "Oct", "EX3", "GRY"]
-    current_data_type_index = 0
+    global data
+    data = dict()
     global run  # Access the global run variable
     global stop_conversion  # Flag to stop convert()
-
+    for i in range(12):
+        led[i].off()
     while True:
         stop_conversion = False  # Reset stop flag before starting conversion
-        bin_num = bin_input()[2:]
-        convert_and_display(data_types[current_data_type_index], bin_num)
+        if binary == None:
+            bin_num = bin_input()[2:]
+        else:
+            bin_num = binary
+        data["Bin"] = bin_num
+        for data_type in data_types:
+            data[data_type] = convert_to(data_type, bin_num)
+        print(data)
+            
+        
 
         while run and not stop_conversion:  # Loop until interrupted or stop flag set
-            utime.sleep(1)
-            current_data_type_index = (current_data_type_index + 1) % len(data_types)
-            convert_and_display(data_types[current_data_type_index], bin_num)
+            for data_type in data_types:
+                display(data_type, bin_num, data[data_type])
+                utime.sleep(1)
+                if stop_conversion:
+                    break
 
 
-
-        
-if __name__ == "__main__":
+    
+# if __name__ == "__main__":
+def init():
 
     global lcd
     i2c = I2C(0, sda=Pin(20), scl=Pin(21))
@@ -154,9 +176,14 @@ if __name__ == "__main__":
     stop_conversion = False 
     global state
     state = 0
-    for i in range(12):
-        led[i].off()
-    convert()
+
+def uasync(data):
+    uasyncio.create_task(convert(data))
+    try:
+        uasyncio.run(convert(data))
+    finally:
+        uasyncio.new_event_loop()
+
     
 
 

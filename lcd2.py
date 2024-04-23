@@ -4,11 +4,11 @@ from lcd_api import LcdApi
 from pico_i2c_lcd import I2cLcd
 
 
-I2C_ADDR     = 39
+I2C_ADDR     = 38
 I2C_NUM_ROWS = 2
 I2C_NUM_COLS = 16
 
-i2c = I2C(1, sda=machine.Pin(26), scl=machine.Pin(27), freq=400000)
+i2c = I2C(1, sda=Pin(26), scl=Pin(27), freq=400000)
 lcd2 = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
 
     
@@ -132,17 +132,20 @@ def textscroll(length,string):
     
 
     
- 
-MIT_LOGO()
-lcd2.move_to (7,0)
-lcd2.putstr("MIT-WPU")
-lcd2.move_to(5,1)
-lcd2.putstr("Group : 07")
-utime.sleep(5)
-lcd2.move_to(4,1)
-string = "FCASD MiniProject"
-textscroll(11,string)
+def lcd_2():
+    MIT_LOGO()
+
+    while True:
+        lcd2.move_to (6,0)
+        lcd2.putstr("MIT-WPU")
+        lcd2.move_to(4,1)
+        lcd2.putstr(" Group : 07")
+        utime.sleep(5)
+        lcd2.move_to(4,1)
+        string = "FCASD MiniProject"
+        textscroll(11,string)
+        utime.sleep(10)
 
 
-
+lcd_2()
 
