@@ -1,3 +1,3 @@
 class NetworkCredentials:
-    ssid = 'Ravi'
-    password = 'Kayush@2005'
+    ssid = 'MITWPU-EXAM'
+    password = 'january@2023'

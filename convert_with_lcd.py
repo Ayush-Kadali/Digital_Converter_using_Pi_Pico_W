@@ -405,6 +405,8 @@ def uasync(data=None):
         uasyncio.new_event_loop() 
 
     
-
+if __name__ == "__main__":
+    init()
+    uasync()
 
 

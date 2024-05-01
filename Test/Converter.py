@@ -13,6 +13,7 @@ convert.active(1)
 
 for i in range(4096):
     convert.put(i)
+    sleep(.2)
         
-sleep(2)
+
 convert.put(0)

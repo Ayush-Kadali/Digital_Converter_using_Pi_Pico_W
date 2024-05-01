@@ -67,7 +67,7 @@ async def handle_request(reader, writer):
 
 async def main():
     print('Setting up webserver...')
-    server = uasyncio.start_server(handle_request, "0.0.0.0", 80)
+    server = uasyncio.start_server(handle_request, "0.0.0.0", 30)
     uasyncio.create_task(server)
 
 
