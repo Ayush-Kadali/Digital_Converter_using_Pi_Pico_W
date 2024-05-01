@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,72 +94,76 @@
             <input type="text" id="grayCodeInput" placeholder="Enter Gray Code">
         </div>
         <button class="btn" onclick="convert()">Convert</button>
+        <button class="btn" onclick="clearInputs()">Clear</button>
     </div>
 
     <script>
         function convert() {
-            const binaryInput = document.getElementById("binaryInput").value;
-            const decimalInput = document.getElementById("decimalInput").value;
-            const hexInput = document.getElementById("hexInput").value;
-            const octalInput = document.getElementById("octalInput").value;
-            const excess3Input = document.getElementById("excess3Input").value;
-            const grayCodeInput = document.getElementById("grayCodeInput").value;
+            const delay = Math.floor(Math.random() * 3) + 1 * 1000; // Random delay between 1 and 4 seconds
+            setTimeout(() => {
+                const binaryInput = document.getElementById("binaryInput").value;
+                const decimalInput = document.getElementById("decimalInput").value;
+                const hexInput = document.getElementById("hexInput").value;
+                const octalInput = document.getElementById("octalInput").value;
+                const excess3Input = document.getElementById("excess3Input").value;
+                const grayCodeInput = document.getElementById("grayCodeInput").value;
 
+                let userInput;
+
+                if (binaryInput) {
+                    userInput = parseInt(binaryInput, 2);
+                } else if (decimalInput) {
+                    userInput = parseInt(decimalInput);
+                } else if (hexInput) {
+                    userInput = parseInt(hexInput, 16);
+                } else if (octalInput) {
+                    userInput = parseInt(octalInput, 8);
+                } else if (excess3Input) {
+                    userInput = parseInt(excess3Input, 2) - 3;
+                } else if (grayCodeInput) {
+                    userInput = convertGrayCode(grayCodeInput);
+                }
+
+                if (!userInput) {
+                    alert("Please enter a valid value in one of the input fields.");
+                    return;
+                }
+
+                const binary = userInput.toString(2);
+                const decimal = userInput.toString(10);
+                const hex = userInput.toString(16).toUpperCase();
+                const octal = userInput.toString(8);
+                const excess3 = (userInput + 3).toString(2);
+                const grayCode = convertDecimalToGray(userInput);
+
+                document.getElementById("decimalInput").value = decimal;
+                document.getElementById("binaryInput").value = binary;
+                document.getElementById("hexInput").value = hex;
+                document.getElementById("octalInput").value = octal;
+                document.getElementById("excess3Input").value = excess3;
+                document.getElementById("grayCodeInput").value = grayCode;
+            }, delay); // Apply delay
+        }
+
+        function clearInputs() {
             document.getElementById("decimalInput").value = "";
             document.getElementById("binaryInput").value = "";
             document.getElementById("hexInput").value = "";
             document.getElementById("octalInput").value = "";
             document.getElementById("excess3Input").value = "";
             document.getElementById("grayCodeInput").value = "";
-
-            let userInput;
-            if (binaryInput) {
-                userInput = parseInt(binaryInput, 2);
-            } else if (decimalInput) {
-                userInput = parseInt(decimalInput);
-            } else if (hexInput) {
-                userInput = parseInt(hexInput, 16);
-            } else if (octalInput) {
-                userInput = parseInt(octalInput, 8);
-            } else if (excess3Input) {
-                userInput = parseInt(excess3Input, 2) - 3;
-            } else if (grayCodeInput) {
-                userInput = convertGrayCode(grayCodeInput);
-            }
-
-            if (!userInput) {
-                alert("Please enter a valid value in one of the input fields.");
-                return;
-            }
-
-            const binary = userInput.toString(2);
-            const decimal = userInput.toString(10);
-            const hex = userInput.toString(16).toUpperCase();
-            const octal = userInput.toString(8);
-            const excess3 = (userInput + 3).toString(2);
-            const grayCode = convertDecimalToGray(userInput);
-
-            document.getElementById("decimalInput").value = decimal;
-            document.getElementById("binaryInput").value = binary;
-            document.getElementById("hexInput").value = hex;
-            document.getElementById("octalInput").value = octal;
-            document.getElementById("excess3Input").value = excess3;
-            document.getElementById("grayCodeInput").value = grayCode;
         }
 
         function convertDecimalToGray(decimal) {
-            let grayCode = decimal.toString(2);
-            grayCode = grayCode.slice(0, -1) + (grayCode[grayCode.length - 1] === "0" ? "0" : "1");
-            return grayCode;
+            return (decimal ^ (decimal >> 1)).toString(2); // Conversion to Gray Code
         }
 
         function convertGrayCode(grayCode) {
-            let decimal = 0;
-            for (let i = grayCode.length - 1; i >= 0; i--) {
-                decimal ^= parseInt(grayCode[i]);
-                decimal <<= 1;
+            let decimal = parseInt(grayCode[0], 2);
+            for (let i = 1; i < grayCode.length; i++) {
+                decimal = (decimal << 1) ^ parseInt(grayCode[i], 2);
             }
-            return decimal >> 1; 
+            return decimal;
         }
     </script>
 </body>
