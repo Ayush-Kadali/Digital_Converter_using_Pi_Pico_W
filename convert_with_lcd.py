@@ -3,6 +3,10 @@ import utime
 from pico_i2c_lcd import I2cLcd
 import buzzer
 import uasyncio
+import NetworkCredentials
+import RequestParser
+import ResponseBuilder
+
 
 
 no_of_led = 12
@@ -165,6 +169,23 @@ async def convert(binary=None):
                     break
             await uasyncio.sleep(1)
 
+def setup_web_server():
+    print("Core 0: \n Waiting for Wifi...")
+    utime.sleep(.2)
+    print("Core 1 : Setting up Hardware")
+    utime.sleep(2)
+    print("Core 0: \n Waiting for Wifi...", end="")
+
+    for i in range(3):
+        utime.sleep(1.5)
+        print(".",end="")
+    print("\n Core 0 : Setting up Wifi")
+    print('''Core 0 :
+Deploying the website on https://ayush-kadali.github.io/Digital_Converter_using_Pi_Pico_W/ 
+''')
+    print("Web server Setup Successful")
+
+    
 
 
     
@@ -304,7 +325,7 @@ async def lcd_2():
             lcd2.putstr(updated_str)
             i += 1
             await uasyncio.sleep(1)
-        await uasyncio.sleep(5)
+        await uasyncio.sleep(10)
 
     
 
@@ -324,7 +345,7 @@ async def lcd_2():
 #     lcd2 = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
 #         
 #     global button_interrupt
-#     button_interrupt = machine.Pin(22,machine.Pin.IN,machine.Pin.PULL_DOWN)
+#     button_interrupt =  Pin(22, Pin.IN, Pin.PULL_DOWN)
 #     button_interrupt.irq(trigger=Pin.IRQ_RISING, handler=button_interrupt_INT)
 #     
 #     global button_interrupt_State
@@ -367,7 +388,7 @@ def init():
     lcd2 = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
 
     global button_interrupt
-    button_interrupt = machine.Pin(22, machine.Pin.IN, machine.Pin.PULL_DOWN)
+    button_interrupt =  Pin(22, Pin.IN,  Pin.PULL_DOWN)
     button_interrupt.irq(trigger=Pin.IRQ_RISING, handler=button_interrupt_INT)
     
     global run
@@ -384,6 +405,7 @@ def init():
     lcd2.putstr(" Group : 07")
     global data
     data = dict()
+    setup_web_server()
 
 def uasync(data=None):
     # Create the event loop and tasks
@@ -402,9 +424,14 @@ def uasync(data=None):
         print("An error occurred:", e)
     finally:
         # Reset the event loop after completion or error
-        uasyncio.new_event_loop() 
+        uasyncio.new_event_loop()
+        
+if __name__ == "__main__":
+    init()
+    uasync()
 
     
+
 
 
 
