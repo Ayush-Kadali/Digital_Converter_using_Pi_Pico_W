@@ -11,7 +11,6 @@ I2C_NUM_COLS = 16
 i2c = I2C(1, sda=Pin(26), scl=Pin(27), freq=400000)
 lcd2 = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
 
-    
 
 
 def MIT_LOGO():
