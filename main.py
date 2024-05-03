@@ -10,21 +10,6 @@ import ResponseBuilder
 
 # Helper functions for conversions (same as previous code)
 
-def decimal_to_binary(decimal):
-    return bin(decimal)[2:]
-
-def decimal_to_hex(decimal):
-    return hex(decimal)[2:].upper()
-
-def decimal_to_octal(decimal):
-    return oct(decimal)[2:]
-
-def decimal_to_excess3(decimal):
-    return bin(decimal + 3)[2:]
-
-def decimal_to_gray(decimal):
-    return decimal ^ (decimal >> 1)
-
 def gray_to_decimal(gray):
     binary = gray
     result = binary[0]
@@ -127,6 +112,7 @@ async def start_server():
 def start_http_server():
     asyncio.run(start_server())
 
+# Running the conversion with LCD on core 1
 _thread.start_new_thread(convert_with_lcd, ())
 
 # Start HTTP server on core 0
